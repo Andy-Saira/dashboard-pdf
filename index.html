@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PDF</title>
+    <!-- Estilos para ocultar barras de herramientas y hacerlo más limpio -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        #pdf-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Ocultar elementos no deseados */
+        .toolbar {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="pdf-container">
+        <iframe 
+            id="pdf-viewer"
+            src="CONSOLIDADO PRUEBA.pdf"
+            frameborder="0"
+            allowfullscreen
+            width="100%"
+            height="100%">
+        </iframe>
+    </div>
+
+    <script>
+        // Forzar zoom y página inicial
+        window.onload = function() {
+            const iframe = document.getElementById('pdf-viewer');
+            
+            // Intenta comunicarse con el iframe para ajustar zoom
+            iframe.onload = function() {
+                try {
+                    // Esto funciona con visores compatibles
+                    iframe.contentWindow.postMessage({
+                        type: 'zoom',
+                        scale: 1.2  // 120% de zoom
+                    }, '*');
+                    
+                    // Forzar página 1
+                    iframe.contentWindow.postMessage({
+                        type: 'page',
+                        pageNumber: 1
+                    }, '*');
+                } catch(e) {
+                    console.log('No se pudo ajustar automáticamente');
+                }
+            };
+        };
+    </script>
+</body>
+</html>
